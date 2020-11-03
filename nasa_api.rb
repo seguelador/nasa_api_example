@@ -1,13 +1,9 @@
-require 'net/http'
+require 'httparty'
 require 'json'
 
-uri = URI('https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY')
-response = Net::HTTP.get(uri)
+response = HTTParty.get('https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY')
+parsed_response = JSON.parse(response.body)
 
-parsed_response = JSON.parse(response)
-
-photos = parsed_response['photos']
-
-photos.each do |photo|
+parsed_response['photos'].each do |photo|
   puts photo["rover"]["name"]
 end
